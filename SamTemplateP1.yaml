@@ -3,10 +3,10 @@ Transform: "AWS::Serverless-2016-10-31"
 Description: P1
 
 Resources:
-  index-Photos-1:
+  indexedPhotos:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: index-Photos-1
+      BucketName: indexedPhotos
     Environment:
         Variables:
           REGION: us-east-1
@@ -21,15 +21,13 @@ Resources:
       MemorySize: 128
       Timeout: 10
       Role: 'arn:aws:iam::438391282585:role/service-role/index-photos-role-uykz6yqs'
-    
-      Layers:
-        - 'arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2'
+      Layers: 'arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2'
       Events:
         BucketEvent1:
           Type: S3
           Properties:
             Bucket:
-              Ref: index-Photos-1
+              Ref: indexedPhotos
             Events:
               - 's3:ObjectCreated:Put'
       Environment:
@@ -45,8 +43,7 @@ Resources:
       MemorySize: 128
       Timeout: 10
       Role: 'arn:aws:iam::438391282585:role/service-role/LF2-search-photos-role-lxf70z9w'
-      Layers:
-        - 'arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2'
+      Layers: 'arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2'
       Environment:
         Variables:
           REGION: us-east-1
@@ -90,7 +87,7 @@ Resources:
       FunctionName: !Ref indexphotosP1
       Principal: s3.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: "arn:aws:s3:::index-Photos-1"
+      SourceArn: "arn:aws:s3:::indexedPhotos"
 
   OpenSearchServiceDomain:
     Type: AWS::OpenSearchService::Domain
@@ -113,7 +110,7 @@ Resources:
             Principal:
                 AWS: "*"
             Action: es:*
-            Resource: 'arn:aws:es:us-east-1:438391282585:domain/photos'
+            Resource: 'arn:aws:iam::438391282585:domain/photos'
       DomainEndpointOptions:
         EnforceHTTPS: true
       EncryptionAtRestOptions:
