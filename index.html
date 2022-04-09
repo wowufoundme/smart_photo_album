@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+        <link rel="stylesheet" href="index.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/axios/dist/axios.standalone.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/rollups/hmac-sha256.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/rollups/sha256.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/components/hmac.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/components/enc-base64.js"></script>
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.879.0.min.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/url-template/url-template.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/sigV4Client.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/apiGatewayClient.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/simpleHttpClient.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/utils.js"></script>
+        <script type="text/javascript" src="apiGateway-js-sdk/apigClient.js"></script>
+        <!-- Development Purpose Tailwind CSS API - Not compressed -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="apiGateway-js-sdk/index.js"></script>
+    </head>
+    <body class="overflow-y-scroll overflow-x-hidden">
+
+        <!-- Side section -->
+        <!-- Do not modify -->
+        <!-- <div class="side-section text-slate-600 py-12 px-12" id="dialog">
+            <a href="#" id="close_dialog" onclick="close_dialog()" 
+            class="font-medium leading-tight text-2xl underline"
+            >Notes</a>
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div> -->
+
+
+        <!-- Header Bar -->
+        <div class="py-12">
+            <h1 class="font-medium leading-tight text-5xl mt-0 mb-2 text-indigo-100 text-center">Smart Photo Album</h1>
+        </div>
+
+        <!-- Search Photos Section -->
+        <div class="sm:container sm:mx-auto flex justify-center flex-col items-center">
+            <div class="container flex justify-center my-4 h-20 items-center">
+                <form action="javascript:void(0);" id="search_photos" class="flex justify-center">
+                    
+                    <!-- Search Photos Input Text -->
+                    <input name="search_query" id="search_query" type="text" placeholder="Search Photos Library" autocomplete="off" autofocus
+                    class="border border-gray-300 text-gray-900 text-md lg p-2.5 dark:bg-transparent dark:border-t-transparent dark:border-r-transparent dark:border-l-transparent dark:border-b-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-b-white dark:focus:outline-none w-96"
+                    >
+
+                    <!-- Search Photos Voice Search -->
+                    <button type="button" class="flex flex-col justify-center mx-2">
+                        <i class="large material-icons text-white" id="mic_search" onclick="voiceSearch()">mic</i>
+                    </button>
+                </form>
+
+                <!-- Search Input Submit Button -->
+                <button type="button" id="searchPhotos" name="searchPhotos" onclick="textSearch()"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mx-4"
+                >Search</button>
+
+                <button type="button" id="clear_grid" name="clear_grid" onclick="clear_grid()"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >Clear Images</button>
+            </div>
+            <div class="h-16 w-16">
+                <img src="assets/spinner.gif" alt="spinner" class="object-contain hidden" id="searching_loading_image"/>
+            </div>
+            <span id="no_image_found" 
+            class="text-slate-300 text-sm py-4 my-4 w-96 text-center border border-dashed border-slate-300 rounded-lg hidden">
+            </span>
+        </div>
+
+        <!-- Divider -->
+        <!-- <div class="py-1">
+            <div class="w-full border-t border-gray-800 my-12"></div>
+        </div> -->
+
+        <!-- Photo Grid -->
+        <div class="my-8">
+            <div id="photos_search_results" class="container grid grid-cols-3 gap-2 mx-auto"></div>
+        </div>
+        <!-- <div class="py-1">
+            <div class="w-full border-t border-gray-800 my-12"></div>
+        </div> -->
+
+        <div class="upload_files">
+            <h2 class="font-medium leading-tight text-3xl mt-0 mb-2 text-indigo-100 text-center">Upload Photos</h2>
+            <div class="justify-center items-center flex-col">
+                <form action="javascript:void(0);" class="flex justify-center items-center flex-col">
+                    
+                    <label for="uploaded_file" 
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-4 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-96 my-5 flex justify-center items-center cursor-pointer"
+                    >
+                        <i class="material-icons mx-2">cloud_upload</i> Choose a photo
+                    </label>
+                    <!-- Actual file input field -->
+                    <input type="file" id="uploaded_file" name="filename" class="file_upload">
+                    <span id="file_name" 
+                    class="text-slate-300 text-sm py-4 my-4 w-96 text-center border border-dashed border-slate-300 rounded-lg">
+                        No file selected
+                    </span>
+                    <div class="mx-5 flex flex-col">
+                        <input autocomplete="off" type="text" id="custom_labels" name="custom_labels" placeholder="Type comma separated custom labels without space"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-96"
+                        >
+                    </div>
+                </form>
+                
+                <div class="flex justify-center flex-col items-center">
+                    <button id="upload_files" onclick="uploadPhoto()"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-56 my-5 flex justify-center flex-row items-center"
+                    >
+                    <div class="h-8 w-8 hidden" id="upload_loading_image">
+                        <img src="assets/spinner.gif" alt="spinner" class="object-contain" />
+                    </div>
+                    Upload</button>
+                </div>
+                
+                <div class="flex justify-center">
+                    <div 
+                    class="flex justify-center align-center w-48 p-2 mb-2 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800 hidden text-center" 
+                    role="alert"
+                    id="success_alert"
+                    >
+                        <span class="font-medium" id="uploadText"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Custom small functionality scripts -->
+        <script src="assets/app.js"></script>
+    </body>
+</html>

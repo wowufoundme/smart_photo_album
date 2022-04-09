@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+body {
+    font-family: 'Inter', 'Courier New', Courier, monospace;
+    /* background: #0f172a; */
+    background: transparent;
+    color: rgb(255, 255, 255);
+    position: relative;
+    display: block;
+    min-height: 100vh;
+}
+
+body:before {
+    z-index: -2;
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+    background: url('./assets/wall.png');
+    background-size: cover;
+    background-position: center;
+}
+
+input.file_upload[type="file"] {
+    display: none;
+}
+
+.side-section {
+    width: 50%;
+    height: 40%;
+    background-color: #f8fafc;
+    position: absolute;
+    margin-left: 25%;
+    margin-top: 15%;
+    transform: translateY(0%);
+}
+
+.close_dialog {
+    transform: translateY(-200%);
+}
