@@ -147,7 +147,6 @@ Resources:
         - - '/aws/lambda/'
           - !Ref LambdaFunctionLF1
       RetentionInDays: 7
-  # search-photos lambda function for interaction with elasticsearch, and lex bot
   LambdaExecutionRoleLF2:
     Type: 'AWS::IAM::Role'
     Properties:
