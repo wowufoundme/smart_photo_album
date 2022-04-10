@@ -6,7 +6,7 @@ Resources:
   indexedphotos:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: indexedphotos
+      BucketName: indexedphotos101
     Environment:
         Variables:
           REGION: us-east-1
