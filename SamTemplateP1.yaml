@@ -96,8 +96,8 @@ Resources:
   OpenSearchServiceDomain:
     Type: AWS::OpenSearchService::Domain
     Properties:
-      DomainName: 'photos'
-      EngineVersion: 'OpenSearch_1.0'
+      DomainName: 'photo'
+      EngineVersion: 'OpenSearch_1.2'
       ClusterConfig:
         InstanceCount: '1'
         InstanceType: 't3.small.search'
