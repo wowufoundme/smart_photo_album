@@ -62,7 +62,7 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       BodyS3Location:
-        Bucket: search_photos
+        Bucket: code-pipeline11
         Key: "api.yaml"
       Description: "Rest api having search photos and upload photos methods."
       Name: RestApiPhotoAlbum
