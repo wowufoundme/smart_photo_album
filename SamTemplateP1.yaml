@@ -21,7 +21,9 @@ Resources:
       MemorySize: 128
       Timeout: 10
       Role: 'arn:aws:iam::438391282585:role/service-role/index-photos-role-uykz6yqs'
-      Layers: 'arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2'
+      Layers:
+        - >-
+          arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2
       Events:
         BucketEvent1:
           Type: S3
@@ -43,7 +45,9 @@ Resources:
       MemorySize: 128
       Timeout: 10
       Role: 'arn:aws:iam::438391282585:role/service-role/LF2-search-photos-role-lxf70z9w'
-      Layers: 'arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2'
+      Layers:
+        - >-
+          arn:aws:lambda:us-east-1:438391282585:layer:dependencies:2
       Environment:
         Variables:
           REGION: us-east-1
