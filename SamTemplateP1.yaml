@@ -3,10 +3,10 @@ Transform: "AWS::Serverless-2016-10-31"
 Description: P1
 
 Resources:
-  indexedPhotos:
+  indexedphotos:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: indexedPhotos
+      BucketName: indexedphotos
     Environment:
         Variables:
           REGION: us-east-1
@@ -29,7 +29,7 @@ Resources:
           Type: S3
           Properties:
             Bucket:
-              Ref: indexedPhotos
+              Ref: indexedphotos
             Events:
               - 's3:ObjectCreated:Put'
       Environment:
@@ -91,7 +91,7 @@ Resources:
       FunctionName: !Ref indexphotosP1
       Principal: s3.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: "arn:aws:s3:::indexedPhotos"
+      SourceArn: "arn:aws:s3:::indexedphotos"
 
   # OpenSearchServiceDomain:
   #   Type: AWS::OpenSearchService::Domain
