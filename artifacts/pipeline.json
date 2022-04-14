@@ -1,0 +1,109 @@
+{
+    "pipeline": {
+        "name": "frontend_pipeline",
+        "roleArn": "arn:aws:iam::438391282585:role/service-role/AWSCodePipelineServiceRole-us-east-1-frontend_pipeline",
+        "artifactStore": {
+            "type": "S3",
+            "location": "codepipeline-us-east-1-249318996737"
+        },
+        "stages": [
+            {
+                "name": "Source",
+                "actions": [
+                    {
+                        "name": "Source",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "ThirdParty",
+                            "provider": "GitHub",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "Branch": "main",
+                            "OAuthToken": "****",
+                            "Owner": "wowufoundme",
+                            "PollForSourceChanges": "false",
+                            "Repo": "smart_photo_album"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "inputArtifacts": [],
+                        "region": "us-east-1",
+                        "namespace": "SourceVariables"
+                    }
+                ]
+            },
+            {
+                "name": "Build",
+                "actions": [
+                    {
+                        "name": "Build",
+                        "actionTypeId": {
+                            "category": "Build",
+                            "owner": "AWS",
+                            "provider": "CodeBuild",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "ProjectName": "lambda_pipeline"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "BuildArtifact"
+                            }
+                        ],
+                        "inputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "region": "us-east-1",
+                        "namespace": "BuildVariables"
+                    }
+                ]
+            },
+            {
+                "name": "Deploy",
+                "actions": [
+                    {
+                        "name": "Deploy",
+                        "actionTypeId": {
+                            "category": "Deploy",
+                            "owner": "AWS",
+                            "provider": "CloudFormation",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "ActionMode": "CHANGE_SET_REPLACE",
+                            "Capabilities": "CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+                            "ChangeSetName": "stack-cs",
+                            "RoleArn": "arn:aws:iam::438391282585:role/service-role-cloud-formation",
+                            "StackName": "Stack",
+                            "TemplatePath": "BuildArtifact::outputTemplateP1.yaml"
+                        },
+                        "outputArtifacts": [],
+                        "inputArtifacts": [
+                            {
+                                "name": "BuildArtifact"
+                            }
+                        ],
+                        "region": "us-east-1",
+                        "namespace": "DeployVariables"
+                    }
+                ]
+            }
+        ],
+        "version": 2
+    },
+    "metadata": {
+        "pipelineArn": "arn:aws:codepipeline:us-east-1:438391282585:frontend_pipeline",
+        "created": "2022-04-09T21:53:01.377000-04:00",
+        "updated": "2022-04-09T22:17:54.319000-04:00"
+    }
+}
