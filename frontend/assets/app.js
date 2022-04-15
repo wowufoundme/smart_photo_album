@@ -26,3 +26,18 @@ function close_dialog() {
   var elem = document.getElementById("dialog");
   elem.classList.add("close_dialog");
 }
+
+// Progress Bar
+function pseudo_progress_bar() {
+    var elem = document.getElementById("progress_bar");
+    var elem_parent = document.getElementById("progress_container");
+    elem_parent.style.display = "inline-block";
+    for (let i = 0; i < 101; i++) {
+        (function (i) {
+            setTimeout(function () {
+                elem.style.width = String(i) + "%";
+            }, 10 * i);
+        })(i);
+    }
+    elem_parent.style.display = "none";
+}
