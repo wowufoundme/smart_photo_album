@@ -1,7 +1,17 @@
 var apigClient = apigClientFactory.newClient();
-window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 
-function voiceSearch(){
+function createNameId(length) {
+    let result           = '';
+    let characters       = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+   return result;
+}
+
+function voiceSearch() {
     if ('SpeechRecognition' in window) {
         console.log("SpeechRecognition is Working");
     } else {
@@ -22,12 +32,16 @@ function voiceSearch(){
 
     recognition.addEventListener("start", function() {
         micButton.innerHTML = "mic_off";
-        // Add class to indicate recording is going on with some 
+        console.log('add class....');
+        micButton.addClass("mic_anim");
+        // Add class to indicate recording is going on with some
         console.log("Recording.....");
     });
 
     recognition.addEventListener("end", function() {
         console.log("Stopping recording.");
+        micButton.removeClass("mic_anim");
+        console.log('remove class....');
         micButton.innerHTML = "mic";
     });
 
@@ -36,9 +50,10 @@ function voiceSearch(){
         const current = event.resultIndex;
         transcript = event.results[current][0].transcript;
         inputSearchQuery.value = transcript;
+        console.log("transcript : ", transcript);
+        searchPhotos(transcript);
         // Add functionality for automatically calling the searchPhotos function after 2 seconds.
         // Backup to "Enter a text or say something for "
-        console.log("transcript : ", transcript)
     }
 }
 
@@ -121,22 +136,21 @@ function uploadPhoto() {
         return;
     }
     let file_name = file.name;
-    let file_type = file.type;
+    let file_type = file.type
     let reader = new FileReader();
-
+    // console.log('file name: ', file_name);
+    // console.log('file type: ', file_type);
     reader.onload = function() {
         let arrayBuffer = this.result;
         let blob = new Blob([new Int8Array(arrayBuffer)], {
             type: file_type
         });
         let blobUrl = URL.createObjectURL(blob);
-
         let data = document.getElementById('uploaded_file').files[0];
         let xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                console.log(this.responseText);
                 document.getElementById('success_alert').style.display = 'inline-block';
                 document.getElementById('uploadText').innerHTML ='Image Uploaded';
                 document.getElementById("upload_loading_image").style.display = "none";
@@ -146,8 +160,14 @@ function uploadPhoto() {
         });
         // Error handling in case of an upload error
         xhr.withCredentials = false;
+        // Generate random file name from function above
+        let mak_str = createNameId(24);
+        // Extract extension from file
+        let ext = String(file_type.split('/').pop());
+        // Create new file file with mak_str + '.' extension_from_file_type
+        let image_name = mak_str + '.' + ext;
         // API Endpoint
-        xhr.open("PUT", "https://fqgas4zyjj.execute-api.us-east-1.amazonaws.com/v1/upload/img-db-00x/" + data.name);
+        xhr.open("PUT", "https://fqgas4zyjj.execute-api.us-east-1.amazonaws.com/v1/upload/img-db-00x/" + image_name);
         xhr.setRequestHeader("Content-Type", data.type);
         xhr.setRequestHeader("x-api-key","");
         xhr.setRequestHeader("x-amz-meta-customLabels", custom_labels.value);
