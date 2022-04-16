@@ -22,8 +22,54 @@
         <!-- Development Purpose Tailwind CSS API - Not compressed -->
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="apiGateway-js-sdk/index.js"></script>
+        <script src="assets/runtime.js"></script>
     </head>
-    <body class="overflow-y-scroll overflow-x-hidden">
+    <body class="overflow-y-scroll overflow-x-hidden antialiased">
+
+        <div class="nav-toggle-container" id="toggle_btn" onclick="toggle_sidebar()">
+            <div class="toggle" id="toggle">
+                  <span></span>
+              </div>
+        </div>
+
+        <div class="nav_section w-screen max-w-md sm:w-full h-screen fixed bg-slate-200 px-8 py-20 z-50 overflow-y-scroll" id="nav_section">
+            <h3 class="font-bold leading-tight text-xl my-4 text-blue-600">Keywords for search</h3>
+            <div class="list_keywords">
+                <ul class="marker:text-green list-disc list-inside ml-2 font_monospace">
+                  <li class="my-2 text-gray-900"><span class="bg-gray-800 px-2 py-1 text-center text-slate-100 rounded">mountain</span></li>
+                  <li class="my-2 text-gray-900"><span class="bg-gray-800 px-2 py-1 text-center text-slate-100 rounded">sea</span></li>
+                </ul>
+            </div>
+            <div class="w-full border-t border-gray-300 my-4 mt-8"></div>
+            <h3 class="font-bold leading-tight text-xl my-4 text-blue-600">Notes</h3>
+            <div class="list_notes">
+                <ul class="marker:text-green list-disc list-inside ml-2 leading-tight text-sm text-justify">
+                    <li class="my-4 text-gray-900">
+                        This project is currently under <span class="font-bold">development</span> and should only be used for development and testing purpose.
+                    </li>
+                    <li class="my-4 text-gray-900">
+                        The project searches for a photo which is tagged on labels through custom labels provided by user or as recognized by AWS Rekognition. Futhermore, the search function uses OpenSearch to search for a photo based on the label and search query. Photos are indexed using a random generator which creates an alphanumeric name for that image and stores it in the S3 bucket.
+                    </li>
+                    <li class="my-4 text-gray-900">
+                        The images indexed are publicly hosted on S3 (AWS) Bucket which can be access this bucket through indexing,
+                        <a href="http://img-db-00x.s3-website-us-east-1.amazonaws.com/" target="_blank" class="px-0.25 text-center text-blue-900 rounded underline">click here</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="w-full border-t border-gray-300 my-4 mt-8"></div>
+            <h3 class="font-bold leading-tight text-xl my-4 text-blue-600">Credits</h3>
+            <div class="list_credits">
+                <ul class="marker:text-green list-disc list-inside ml-2 leading-tight text-sm">
+                  <li class="mb-1 text-gray-900">
+                      Made with <span class="text-rose-700 text-xl">♥</span> by
+                      <a href="https://wowufoundme.js.org" target="_blank" class="px-0.25 text-center text-blue-900 rounded underline">Shubhkirti Sharma</a>
+                  </li>
+                  <li class="mb-1 text-gray-900">
+                      <a href="https://github.com/qoomon" target="_blank" class="px-0.25 text-center text-blue-900 rounded underline">@github/qoomon</a> for Bucket Browser
+                  </li>
+                </ul>
+            </div>
+        </div>
 
         <!-- Side section -->
         <!-- Do not modify -->
@@ -39,14 +85,25 @@
             </ul>
         </div> -->
 
-
         <!-- Header Bar -->
         <div class="py-12">
             <h1 class="font-medium leading-tight text-5xl mt-0 mb-2 text-indigo-100 text-center">Photofy</h1>
         </div>
 
+        <div class="navigator flex flex-row text-center justify-center">
+            <btn
+            class="photo_search_nav rounded-t-lg mr-6 pl-12 pr-12 py-6 mt-2 hover:bg-gray-100/10 hover:text-white cursor-pointer current_tab"
+            id="photo_search_nav" onclick="tab_switch_search()">
+            Search</btn>
+            <btn
+            class="search_search_nav rounded-t-lg ml-6 pl-12 pr-12 py-6 mt-2 hover:bg-gray-100/10 hover:text-white cursor-pointer"
+            id="search_search_nav" onclick="tab_switch_upload()">
+            Upload</btn>
+        </div>
+        <div class="w-full border-t border-gray-300 mb-12"></div>
+
         <!-- Search Photos Section -->
-        <div class="sm:container sm:mx-auto flex justify-center flex-col items-center">
+        <div class="search_photo sm:container sm:mx-auto justify-center flex-col items-center z-1" id="search_photo_section">
             <div class="container flex justify-center my-4 h-20 items-center">
                 <form action="javascript:void(0);" id="search_photos" class="flex justify-center">
 
@@ -60,13 +117,14 @@
                         <i class="large material-icons text-white rounded-full h-10 w-10 mic_anim_default" style="line-height: 40px;" id="mic_search" onclick="voiceSearch()">mic</i>
                     </button>
                 </form>
-
-                <!-- Search Input Submit Button -->
+            </div>
+            <!-- Search Input Submit Button -->
+            <div class="flex">
                 <button type="button" id="searchPhotos" name="searchPhotos" onclick="textSearch()"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mx-4"
                 >Search</button>
 
-                <button type="button" id="clear_grid" name="clear_grid" onclick="clear_grid()"
+                <button type="button" id="clear_grid" name="clear_grid" onclick="clear_grid(); pseudo_progress_bar();"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >Clear Images</button>
             </div>
@@ -76,22 +134,15 @@
             <span id="no_image_found"
             class="text-slate-300 text-sm py-4 my-4 w-96 text-center border border-dashed border-slate-300 rounded-lg hidden">
             </span>
+
+            <!-- Photo Grid -->
+            <div class="my-8">
+                <div id="photos_search_results" class="container grid grid-cols-3 gap-2 mx-auto"></div>
+            </div>
         </div>
 
-        <!-- Divider -->
-        <!-- <div class="py-1">
-            <div class="w-full border-t border-gray-800 my-12"></div>
-        </div> -->
-
-        <!-- Photo Grid -->
-        <div class="my-8">
-            <div id="photos_search_results" class="container grid grid-cols-3 gap-2 mx-auto"></div>
-        </div>
-        <!-- <div class="py-1">
-            <div class="w-full border-t border-gray-800 my-12"></div>
-        </div> -->
-
-        <div class="upload_files">
+        <!-- Upload Photos Section -->
+        <div class="upload_files sm:container sm:mx-auto justify-center flex-col items-center" id="upload_photo_section">
             <h2 class="font-medium leading-tight text-3xl mt-0 mb-2 text-indigo-100 text-center">Upload Photos</h2>
             <div class="flex justify-center items-center flex-col">
                 <form action="javascript:void(0);" class="flex justify-center items-center flex-col">
@@ -113,9 +164,11 @@
                         >
                     </div>
                 </form>
-                <div class="progress_container w-96 mt-6">
+
+                <div class="progress_container w-96 mt-6" id="progress_container">
                     <div class="progress_bar" id="progress_bar"></div>
                 </div>
+
                 <div class="flex justify-center flex-col items-center">
                     <button id="upload_files" onclick="uploadPhoto()"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-56 my-5 flex justify-center flex-row items-center"
@@ -137,6 +190,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Custom small functionality scripts -->
         <script src="assets/app.js"></script>
     </body>

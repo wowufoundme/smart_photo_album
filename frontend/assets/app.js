@@ -31,6 +31,7 @@ function close_dialog() {
 function pseudo_progress_bar() {
     var elem = document.getElementById("progress_bar");
     var elem_parent = document.getElementById("progress_container");
+    console.log(elem, ',', elem_parent);
     elem_parent.style.display = "inline-block";
     for (let i = 0; i < 101; i++) {
         (function (i) {
@@ -39,5 +40,7 @@ function pseudo_progress_bar() {
             }, 10 * i);
         })(i);
     }
-    elem_parent.style.display = "none";
+    setTimeout(function() {
+        elem_parent.display.display = "none";
+    }, 1500);
 }

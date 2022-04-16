@@ -167,15 +167,18 @@ function uploadPhoto() {
         // Create new file file with mak_str + '.' extension_from_file_type
         let image_name = mak_str + '.' + ext;
         // API Endpoint
-        // xhr.open("PUT", "https://fqgas4zyjj.execute-api.us-east-1.amazonaws.com/v1/upload/img-db-00x/" + image_name);
+        xhr.open("PUT", "https://fqgas4zyjj.execute-api.us-east-1.amazonaws.com/v1/upload/img-db-00x/" + image_name);
 
         // Temp endpoint for development purpose
-        xhr.open("PUT", "URL_HERE" + image_name);
+        // xhr.open("PUT", "URL_HERE" + image_name);
         xhr.setRequestHeader("Content-Type", data.type);
         xhr.setRequestHeader("x-api-key","");
         xhr.setRequestHeader("x-amz-meta-customLabels", custom_labels.value);
         xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
         xhr.send(data);
+        setTimeout(function() {
+            document.getElementById('success_alert').style.display = 'none';
+        }, 2000)
     };
     reader.readAsArrayBuffer(file);
 }

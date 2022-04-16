@@ -1,0 +1,28 @@
+{
+  "ResponseMetadata": {
+    "RequestId": "a06193b5-a47a-4e32-b772-fa8ffbc7c260",
+    "HTTPStatusCode": 200,
+    "HTTPHeaders": {
+      "content-type": "application/json",
+      "date": "Fri, 15 Apr 2022 20:06:42 GMT",
+      "x-amzn-requestid": "a06193b5-a47a-4e32-b772-fa8ffbc7c260",
+      "content-length": "373",
+      "connection": "keep-alive"
+    },
+    "RetryAttempts": 0
+  },
+  "name": "keysDb",
+  "enumerationValues": [
+    {
+      "value": "mountain"
+    },
+    {
+      "value": "sea"
+    }
+  ],
+  "lastUpdatedDate": "datetime.datetime(2022, 4, 8, 23, 31, 17, 810000, tzinfo=tzlocal())",
+  "createdDate": "datetime.datetime(2022, 4, 8, 23, 31, 17, 810000, tzinfo=tzlocal())",
+  "version": "2",
+  "checksum": "a61c9003-5563-4eff-b674-118f127536dc",
+  "valueSelectionStrategy": "TOP_RESOLUTION"
+}
