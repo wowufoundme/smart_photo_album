@@ -32,7 +32,7 @@ def search_elastic_search(labels):
     service = 'es'
     credentials = boto3.Session().get_credentials()
     awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
-    url = 'https://search-photos-vgwy7lm3x32a3n72oxallgjfta.us-east-1.es.amazonaws.com/photos/_search?q='
+    url = 'https://search-photo-ec3pmbt3ug3p6vgwsvojaygdau.us-east-1.es.amazonaws.com/photos/_search?q='
     resp = []
     for label in labels:
         if (label is not None) and label != '':
@@ -45,7 +45,7 @@ def search_elastic_search(labels):
              for val in r['hits']['hits']:
                 key = val['_source']['objectKey']
                 if key not in output:
-                    output.append("https://img-db-00x.s3.amazonaws.com/"+key)
+                    output.append("https://indexedphotos101.s3.amazonaws.com/"+key)
     print('output: ', output)
     return output
 
@@ -62,7 +62,7 @@ def lambda_handler(event, context):
     img_paths = {}
     if len(labels) != 0:
         img_paths = search_elastic_search(labels)
-        img_paths = list(set(img_paths))        
+        img_paths = list(set(img_paths))
     if not img_paths:
         return{
             'statusCode':404,

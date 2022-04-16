@@ -15,21 +15,21 @@ region = 'us-east-1'
 service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
-host = "search-photos-vgwy7lm3x32a3n72oxallgjfta.us-east-1.es.amazonaws.com"
+host = "search-photo-ec3pmbt3ug3p6vgwsvojaygdau.us-east-1.es.amazonaws.com"
 rekognition = boto3.client('rekognition')
 
 es = OpenSearch(
         hosts = [{'host': host, 'port': 443}],
-        http_auth = awsauth, 
+        http_auth = awsauth,
         use_ssl = True,
-        verify_certs = True, 
+        verify_certs = True,
         connection_class = RequestsHttpConnection
     )
 
 def get_custom_labels(bucket, file_name):
     s3 = boto3.client("s3")
     metadata = s3.head_object(
-        Bucket = bucket, 
+        Bucket = bucket,
         Key = file_name
     )
     if "customlabels" in metadata["Metadata"].keys():
