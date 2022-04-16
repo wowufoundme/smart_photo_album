@@ -114,7 +114,7 @@ Resources:
             Principal:
                 AWS: "*"
             Action: es:*
-            Resource: 'arn:aws:iam::438391282585:domain/photos'
+            Resource: 'arn:aws:iam::438391282585:domain/photo'
       DomainEndpointOptions:
         EnforceHTTPS: true
       EncryptionAtRestOptions:
