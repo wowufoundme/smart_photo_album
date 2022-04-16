@@ -7,13 +7,13 @@ function voiceSearch(){
     } else {
         console.log("SpeechRecognition is Not Working");
     }
-    
+
     var inputSearchQuery = document.getElementById("search_query");
     const recognition = new window.SpeechRecognition();
     //recognition.continuous = true;
 
-    micButton = document.getElementById("mic_search");  
-    
+    micButton = document.getElementById("mic_search");
+
     if (micButton.innerHTML == "mic") {
         recognition.start();
     } else if (micButton.innerHTML == "mic_off"){
@@ -60,12 +60,12 @@ function searchPhotos(searchText) {
     var params = {
         'q' : searchText
     };
-    
+
     apigClient.searchGet(params, {}, {})
         .then(function(result) {
 
             image_paths = result["data"];
-            
+
             var photosDiv = document.getElementById("photos_search_results");
             photosDiv.innerHTML = "";
 
@@ -74,9 +74,9 @@ function searchPhotos(searchText) {
                 images_list = image_paths[n].split('/');
                 imageName = images_list[images_list.length - 1];
                 photosDiv.innerHTML += `
-                <figure 
-                class="w-full relative rounded 
-                border border-2 border-transparent border-solid 
+                <figure
+                class="w-full relative rounded
+                border border-2 border-transparent border-solid
                 hover:border hover:border-2 hover:border-white border-solid custom-shadow">
                 <img src="${image_paths[n]}">
                 <figcaption class="absolute text-xs -mt-8 text-white px-4 w-full py-2 backdrop-opacity-10 backdrop-invert bg-slate-900">
@@ -144,7 +144,7 @@ function uploadPhoto() {
         // Error handling in case of an upload error
         xhr.withCredentials = false;
         // API Endpoint
-        xhr.open("PUT", "https://fqgas4zyjj.execute-api.us-east-1.amazonaws.com/v1/upload/img-db-00x/" + data.name);
+        xhr.open("PUT", "https://fqgas4zyjj.execute-api.us-east-1.amazonaws.com/v1/upload/indexedphotos101/" + data.name);
         xhr.setRequestHeader("Content-Type", data.type);
         xhr.setRequestHeader("x-api-key","");
         xhr.setRequestHeader("x-amz-meta-customLabels", custom_labels.value);
