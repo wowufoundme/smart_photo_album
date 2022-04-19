@@ -12,6 +12,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 #this is a test comment
+# demo
 
 region = 'us-east-1'
 service = 'es'
