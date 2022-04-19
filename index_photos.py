@@ -11,7 +11,8 @@ from requests_aws4auth import AWS4Auth
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-#this is a test comment
+#this is a test 
+# this is new
 
 region = 'us-east-1'
 service = 'es'
